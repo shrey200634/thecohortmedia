@@ -334,7 +334,7 @@
 <!-- Corner Amber Washi Pin Left -->
 <div class="washi-tape -top-3 left-12 w-20 h-4 bg-[#D97706]/75 rounded-xs transform -rotate-3 border border-black/5"></div>
 <!-- Flying Coin Canvas Layer -->
-<div class="absolute inset-0 pointer-events-none z-30" id="coin-stage"><div class="flying-coin">10</div><div class="flying-coin" style="transform: translate(534.324px, 178.849px) scale(1.09832) rotate(83.3516deg);">10</div><div class="flying-coin">10</div></div>
+<div class="absolute inset-0 pointer-events-none z-30" id="coin-stage"></div>
 <!-- Status Note on Cycle Finish -->
 <div class="absolute top-4 left-1/2 -translate-x-1/2 transition-opacity duration-300 z-20 px-4 py-1.5 bg-[#FAF8F3] border border-ink-midnight/20 rounded-full text-ink-midnight font-mono text-xs font-semibold flex items-center gap-2 shadow-xs opacity-0" id="cycle-banner">
 <span class="w-1.5 h-1.5 rounded-full bg-[#4D7C5D] animate-ping"></span>
@@ -372,7 +372,7 @@
 </div>
 <!-- Counter & Title -->
 <div class="flex items-baseline justify-center gap-1.5 mb-1">
-<span class="font-editorial text-4xl text-ink-midnight font-medium tracking-tight" id="chest-counter">40</span>
+<span class="font-editorial text-4xl text-ink-midnight font-medium tracking-tight" id="chest-counter">100</span>
 <span class="font-mono text-xs font-semibold uppercase text-ink-midnight/60">Units</span>
 </div>
 <span class="font-sans font-semibold text-base text-ink-midnight">Your Business</span>
@@ -435,7 +435,7 @@
 <!-- Hand-Inked Unit Counter -->
 <div class="text-right shrink-0">
 <div class="font-handwriting text-2xl font-bold text-ink-midnight tracking-tight">
-<span id="counter-a1" class="">30</span> <span class="text-base text-ink-midnight/60 font-normal">/ 50</span>
+<span id="counter-a1" class="">0</span> <span class="text-base text-ink-midnight/60 font-normal">/ 50</span>
 </div>
 <span class="font-mono text-[10px] uppercase tracking-wider text-on-surface-variant font-medium">units</span>
 </div>
@@ -444,13 +444,13 @@
 <div class="mt-4 pt-3 border-t border-ink-midnight/10 flex items-center justify-between text-xs font-mono text-on-surface-variant">
 <div class="flex items-center gap-2">
 <span class="w-1.5 h-1.5 rounded-full bg-[#D97706]" id="dot-a1"></span>
-<span class="font-sans text-xs text-on-surface-variant" id="status-a1">Directing units...</span>
+<span class="font-sans text-xs text-on-surface-variant" id="status-a1">Awaiting allocation</span>
 </div>
 <span class="text-ink-midnight/60 text-[11px]">[ 50 units max ]</span>
 </div>
 </div>
 <!-- BOX A2: Medium (Allocated 30 units max) - Dusty Rose Subtle Accent Tab -->
-<div class="relative bg-[#FAFAF7] border border-ink-midnight/15 border-l-[3px] border-l-[#BE6464] rounded-xl p-4.5 transition-all duration-300 shadow-xs flex flex-col justify-between" id="box-a2" style="transform: scale(1.015);">
+<div class="relative bg-[#FAFAF7] border border-ink-midnight/15 border-l-[3px] border-l-[#BE6464] rounded-xl p-4.5 transition-all duration-300 shadow-xs flex flex-col justify-between" id="box-a2" style="transform: scale(1);">
 <!-- Destination landing anchor -->
 <div class="absolute top-4 right-4 w-4 h-4 pointer-events-none" id="target-a2"></div>
 <div class="flex items-start justify-between gap-3">
@@ -474,7 +474,7 @@
 <!-- Hand-Inked Unit Counter -->
 <div class="text-right shrink-0">
 <div class="font-handwriting text-2xl font-bold text-ink-midnight tracking-tight">
-<span id="counter-a2" class="">20</span> <span class="text-base text-ink-midnight/60 font-normal">/ 30</span>
+<span id="counter-a2" class="">0</span> <span class="text-base text-ink-midnight/60 font-normal">/ 30</span>
 </div>
 <span class="font-mono text-[10px] uppercase tracking-wider text-on-surface-variant font-medium">units</span>
 </div>
@@ -483,7 +483,7 @@
 <div class="mt-3 pt-2.5 border-t border-ink-midnight/10 flex items-center justify-between text-xs font-mono text-on-surface-variant">
 <div class="flex items-center gap-2">
 <span class="w-1.5 h-1.5 rounded-full bg-[#BE6464]" id="dot-a2"></span>
-<span class="font-sans text-xs text-on-surface-variant" id="status-a2">Directing units...</span>
+<span class="font-sans text-xs text-on-surface-variant" id="status-a2">Awaiting allocation</span>
 </div>
 <span class="text-ink-midnight/60 text-[11px]">[ 30 units max ]</span>
 </div>
@@ -513,7 +513,7 @@
 <!-- Hand-Inked Unit Counter -->
 <div class="text-right shrink-0">
 <div class="font-handwriting text-2xl font-bold text-ink-midnight tracking-tight">
-<span id="counter-a3" class="">10</span> <span class="text-base text-ink-midnight/60 font-normal">/ 20</span>
+<span id="counter-a3" class="">0</span> <span class="text-base text-ink-midnight/60 font-normal">/ 20</span>
 </div>
 <span class="font-mono text-[10px] uppercase tracking-wider text-on-surface-variant font-medium">units</span>
 </div>
@@ -522,7 +522,7 @@
 <div class="mt-2.5 pt-2 border-t border-ink-midnight/10 flex items-center justify-between text-xs font-mono text-on-surface-variant">
 <div class="flex items-center gap-2">
 <span class="w-1.5 h-1.5 rounded-full bg-[#4D7C5D]" id="dot-a3"></span>
-<span class="font-sans text-xs text-on-surface-variant" id="status-a3">Directing units...</span>
+<span class="font-sans text-xs text-on-surface-variant" id="status-a3">Awaiting allocation</span>
 </div>
 <span class="text-ink-midnight/60 text-[11px]">[ 20 units max ]</span>
 </div>
