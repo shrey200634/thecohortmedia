@@ -1,0 +1,986 @@
+<!DOCTYPE html><html class="scroll-smooth" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>The Cohort Media — Field Notes on Modern Content Operations</title>
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&amp;family=Hanken+Grotesk:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&amp;family=Space+Grotesk:wght@400;500;600;700&amp;family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "ink-midnight": "#1E2D50",
+            "ink-midnight-deep": "#141F36",
+            "paper-base": "#FAFAF7",
+            "paper-sheet": "#FFFFFF",
+            "paper-warm": "#FAF7F2",
+            "on-surface": "#1A1C23",
+            "on-surface-variant": "#4E5467",
+            "outline-soft": "#DCDED8",
+            "sage-subtle": "rgba(126, 153, 134, 0.45)",
+            "rose-subtle": "rgba(196, 137, 132, 0.45)",
+            "tape-rose": "#BE6464",
+            "tape-sage": "#4D7C5D",
+            "tape-amber": "#D97706"
+          },
+          fontFamily: {
+            "handwriting": ["Caveat", "cursive"],
+            "editorial": ["Newsreader", "serif"],
+            "mono": ["Space Grotesk", "monospace"],
+            "sans": ["Hanken Grotesk", "sans-serif"]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    /* 68px x 68px Airy Graph-Paper Grid Background at 6.5% Midnight Ink Opacity */
+    body {
+      background-color: #FAFAF7;
+      background-image: 
+        linear-gradient(to right, rgba(30, 45, 80, 0.065) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(30, 45, 80, 0.065) 1px, transparent 1px);
+      background-size: 68px 68px;
+      color: #1A1C23;
+    }
+
+    /* Tactile Paper Scrap Styling & Multi-layered Shadows */
+    .paper-card {
+      background: #FFFFFF;
+      border: 1px solid rgba(30, 45, 80, 0.12);
+      box-shadow: 0 12px 28px -6px rgba(27, 42, 74, 0.12), 0 6px 12px -4px rgba(27, 42, 74, 0.07), 0 1px 2px rgba(27, 42, 74, 0.05);
+      position: relative;
+    }
+    .paper-card:hover {
+      box-shadow: 0 18px 36px -6px rgba(27, 42, 74, 0.16), 0 8px 16px -4px rgba(27, 42, 74, 0.09);
+    }
+
+    /* Torn / Deckled edge clip paths */
+    .deckled-bottom-1 {
+      clip-path: polygon(
+        0% 0%, 100% 0%, 100% calc(100% - 6px), 
+        96% 100%, 91% calc(100% - 5px), 85% calc(100% - 2px), 80% 100%, 
+        73% calc(100% - 4px), 67% calc(100% - 2px), 61% 100%, 
+        53% calc(100% - 6px), 47% calc(100% - 2px), 41% 100%, 
+        34% calc(100% - 5px), 28% calc(100% - 2px), 22% 100%, 
+        15% calc(100% - 5px), 9% 100%, 4% calc(100% - 3px), 0% calc(100% - 5px)
+      );
+    }
+    .deckled-bottom-2 {
+      clip-path: polygon(
+        0% 0%, 100% 0%, 100% calc(100% - 5px),
+        95% calc(100% - 1px), 90% calc(100% - 6px), 83% 100%, 78% calc(100% - 4px),
+        70% calc(100% - 6px), 64% 100%, 57% calc(100% - 3px), 50% calc(100% - 6px),
+        43% calc(100% - 2px), 36% 100%, 29% calc(100% - 5px), 21% calc(100% - 2px),
+        14% 100%, 8% calc(100% - 5px), 0% calc(100% - 2px)
+      );
+    }
+    .deckled-top-1 {
+      clip-path: polygon(
+        0% 5px, 6% 1px, 12% 6px, 19% 1px, 26% 5px, 34% 0px, 42% 6px, 
+        51% 1px, 60% 5px, 68% 0px, 76% 6px, 84% 2px, 92% 5px, 100% 2px,
+        100% 100%, 0% 100%
+      );
+    }
+    .deckled-card-wide {
+      clip-path: polygon(
+        0% 0%, 100% 0%, 100% calc(100% - 4px),
+        98% 100%, 95% calc(100% - 3px), 92% 100%, 88% calc(100% - 4px), 84% 100%,
+        80% calc(100% - 3px), 75% 100%, 70% calc(100% - 4px), 65% 100%,
+        60% calc(100% - 3px), 55% 100%, 50% calc(100% - 4px), 45% 100%,
+        40% calc(100% - 3px), 35% 100%, 30% calc(100% - 4px), 25% 100%,
+        20% calc(100% - 3px), 15% 100%, 10% calc(100% - 4px), 5% 100%,
+        0% calc(100% - 3px)
+      );
+    }
+
+    /* Washi Tape Strips */
+    .washi-tape {
+      position: absolute;
+      z-index: 20;
+      pointer-events: none;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Animated Gold Coin Flight */
+    .flying-coin {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #FAF4E8;
+      border: 1.5px solid #1E2D50;
+      color: #1E2D50;
+      font-family: 'Space Grotesk', monospace;
+      font-weight: 700;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 3px 8px rgba(30, 45, 80, 0.18), inset 0 1px 1px #FFF;
+      z-index: 30;
+      pointer-events: none;
+      will-change: transform, opacity;
+    }
+  </style>
+</head>
+<body class="min-h-screen relative font-sans text-on-surface antialiased overflow-x-hidden selection:bg-ink-midnight/15 selection:text-ink-midnight">
+<!-- NAVIGATION BAR -->
+<header class="fixed top-0 w-full z-40 bg-[#FAFAF7]/85 backdrop-blur-md border-b border-ink-midnight/10">
+<div class="max-w-6xl mx-auto px-6 sm:px-8 h-20 flex items-center justify-between">
+<!-- Handwritten Fountain-Pen Wordmark -->
+<a class="group inline-flex flex-col relative pt-1" href="#"><img src="https://lh3.googleusercontent.com/aida/AEtjO1XRFJluLeGJkCmstplmaXyZYIX9FTCYLLpf2clVkXQxQCtvYZMbwuVQCSUpvdAakt2lW3sPhcZKuPHcHxQp-Mq6dQ0XLdC3O8JkF-igjNnaP24E5H38arNveAD8SqOOdOWv6DFTifFDqTp0aDimnsvSnXlRArIY0xNpW9p8Ff6BOXnokXo1nzKWr9J40yuzw-TbtVI6fUTj43lQPUS4WqPINmnAHG-NAhcFy3JnVHll8g98402rCJXIU-Q" alt="The Cohort Media" class="h-9 w-auto object-contain transition-opacity group-hover:opacity-90"></a>
+<!-- Minimal Nav Links -->
+<nav class="hidden md:flex items-center gap-8 font-sans text-sm font-medium text-on-surface-variant">
+<a class="hover:text-ink-midnight transition-colors" href="#problem">The Problem</a>
+<a class="hover:text-ink-midnight transition-colors" href="#how-it-works">How It Works</a>
+<a class="hover:text-ink-midnight transition-colors" href="#why-us">Why Us</a>
+<a class="hover:text-ink-midnight transition-colors" href="#founders">Founders</a>
+</nav>
+<!-- Clean CTA Button -->
+<div>
+<a class="inline-flex items-center justify-center px-4 py-2 text-xs font-mono font-semibold uppercase tracking-wider text-ink-midnight border border-ink-midnight/30 rounded-lg bg-white/80 hover:bg-ink-midnight hover:text-white transition-all shadow-xs" href="https://docs.google.com/forms/d/e/1FAIpQLSeQdPyrMlsmzObEgrK11FKfDFW-2bgo-viDt0t7uLkXDG8xEA/viewform" rel="noopener noreferrer" target="_blank">
+          Get Started
+        </a>
+</div>
+</div>
+</header>
+<main class="w-full pt-20">
+<!-- ========================================================================= -->
+<!-- HERO SECTION -->
+<!-- ========================================================================= -->
+<section class="relative w-full max-w-6xl mx-auto px-6 sm:px-8 pt-20 pb-12 md:pt-24 md:pb-14">
+<div class="max-w-3xl flex flex-col space-y-6">
+<!-- Handwritten Eyebrow Script -->
+<p class="font-handwriting text-3xl sm:text-4xl md:text-5xl text-ink-midnight font-bold leading-tight">
+          Tired of paying for idle creative capacity?
+        </p>
+<!-- Main Title & Subheading with Handwritten Pen Loop -->
+<h1 class="font-editorial text-3xl sm:text-4xl md:text-5xl text-on-surface font-normal leading-[1.28] tracking-tight">
+          Stop dead-stocking freelancers you don't need every month.
+        </h1>
+<p class="font-sans text-lg sm:text-xl text-ink-midnight/90 leading-relaxed font-normal">
+          The Cohort Media gives you an 
+          <span class="relative inline-block px-2 text-ink-midnight font-medium whitespace-nowrap">
+            on-demand bench
+            <!-- Hand-drawn ink loop in #1E2D50 -->
+<svg class="absolute -inset-1.5 w-[calc(100%+14px)] h-[calc(100%+14px)] pointer-events-none text-ink-midnight" fill="none" viewBox="0 0 170 54">
+<path d="M12 28 C14 12, 48 7, 95 8 C146 9, 162 20, 158 35 C153 49, 102 52, 45 49 C19 47, 6 38, 10 22 C13 13, 33 8, 58 7" stroke="currentColor" stroke-linecap="round" stroke-width="2.2"></path>
+</svg>
+</span>
+          of vetted creative talent — scale up or down as your content needs change, without hiring, firing, or idle overhead.
+        </p>
+<p class="font-sans text-base sm:text-lg text-on-surface-variant max-w-2xl leading-relaxed font-normal">
+          Access on-demand video editors, designers, and copywriters without bloated agency overhead or unutilized retainer hours. Flex allocation monthly based on actual demand.
+        </p>
+<!-- Hero Action Cluster with Sketched Ink Arrow -->
+<div class="pt-2 flex flex-col sm:flex-row sm:items-center gap-6 relative">
+<a class="inline-flex items-center justify-center gap-3 px-7 py-4 bg-ink-midnight hover:bg-ink-midnight-deep text-white font-sans font-medium text-base rounded-xl shadow-sm hover:shadow transition-all group" href="https://docs.google.com/forms/d/e/1FAIpQLSeQdPyrMlsmzObEgrK11FKfDFW-2bgo-viDt0t7uLkXDG8xEA/viewform" rel="noopener noreferrer" target="_blank">
+<span class="">Submit Your Requirement</span>
+<span class="font-mono text-lg transition-transform group-hover:translate-x-1">→</span>
+</a>
+<div class="flex items-center gap-3">
+<svg class="w-10 h-8 text-ink-midnight pointer-events-none shrink-0 -scale-y-100 transform -rotate-12" fill="none" viewBox="0 0 48 32">
+<path d="M40 8 C 28 12, 16 22, 10 24" stroke="currentColor" stroke-linecap="round" stroke-width="2.2"></path>
+<path d="M18 25 L 10 24 L 14 16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"></path>
+</svg>
+<span class="font-handwriting text-xl text-ink-midnight font-bold tracking-tight">Takes 2 mins • Direct intake reviewed within 24h</span>
+</div>
+</div>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- STAT STRIP: BETWEEN HERO & THE PROBLEM -->
+<!-- ========================================================================= -->
+<section class="w-full max-w-6xl mx-auto px-6 sm:px-8 py-4">
+<div class="paper-card bg-[#FAF8F5] border border-ink-midnight/15 rounded-xl px-6 py-4 shadow-sm flex flex-col md:flex-row items-center justify-around gap-4 md:gap-0 transform rotate-[-0.3deg]">
+<!-- Stat 1 -->
+<div class="flex flex-col items-center md:items-start text-center md:text-left px-4">
+<div class="relative inline-block">
+<span class="font-sans font-bold text-2xl text-ink-midnight tracking-tight">50+ hours</span>
+<svg class="w-full h-1.5 text-ink-midnight/70 -mt-0.5" fill="none" viewBox="0 0 100 6">
+<path d="M 2 3 C 25 1.5, 65 4.5, 98 2.5" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"></path>
+</svg>
+</div>
+<span class="font-mono text-xs uppercase tracking-wider text-on-surface-variant font-medium mt-1">saved monthly</span>
+</div>
+<!-- Divider -->
+<div class="hidden md:block w-px h-10 bg-ink-midnight/15"></div>
+<!-- Stat 2 -->
+<div class="flex flex-col items-center md:items-start text-center md:text-left px-4">
+<div class="relative inline-block">
+<span class="font-sans font-bold text-2xl text-ink-midnight tracking-tight">3-day</span>
+<svg class="w-full h-1.5 text-ink-midnight/70 -mt-0.5" fill="none" viewBox="0 0 100 6">
+<path d="M 2 3.5 C 30 1.5, 70 4, 98 2" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"></path>
+</svg>
+</div>
+<span class="font-mono text-xs uppercase tracking-wider text-on-surface-variant font-medium mt-1">average turnaround</span>
+</div>
+<!-- Divider -->
+<div class="hidden md:block w-px h-10 bg-ink-midnight/15"></div>
+<!-- Stat 3 -->
+<div class="flex flex-col items-center md:items-start text-center md:text-left px-4">
+<div class="relative inline-block">
+<span class="font-sans font-bold text-2xl text-ink-midnight tracking-tight">Zero</span>
+<svg class="w-full h-1.5 text-ink-midnight/70 -mt-0.5" fill="none" viewBox="0 0 100 6">
+<path d="M 2 2.5 C 20 4.5, 60 1.5, 98 3.5" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"></path>
+</svg>
+</div>
+<span class="font-mono text-xs uppercase tracking-wider text-on-surface-variant font-medium mt-1">missed deadlines</span>
+</div>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- SECTION: THE PROBLEM (THE CAPACITY TRAP) -->
+<!-- ========================================================================= -->
+<section class="w-full max-w-6xl mx-auto px-6 sm:px-8 py-16 md:py-20" id="problem">
+<!-- Section Header -->
+<div class="max-w-2xl mb-10">
+<p class="font-mono text-xs uppercase tracking-widest text-ink-midnight font-semibold mb-2">
+          THE CAPACITY TRAP
+        </p>
+<h2 class="font-handwriting text-3xl sm:text-4xl text-ink-midnight font-bold leading-tight">
+          Why does creative staffing always feel so feast-or-famine?
+        </h2>
+</div>
+<!-- 3 Scrapbook Paper Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch pt-2">
+<!-- Card 1 (Tilted -1.5deg with Amber Washi Tape) -->
+<div class="paper-card deckled-bottom-1 p-8 rounded-xl flex flex-col justify-between transition-transform duration-300 hover:rotate-0 transform -rotate-[1.5deg]">
+<!-- Washi Tape Amber on top center -->
+<div class="washi-tape -top-3.5 left-10 w-24 h-5 bg-[#D97706]/75 rounded-xs transform -rotate-2 border border-black/5"></div>
+<div>
+<div class="w-12 h-12 rounded-xl bg-amber-50/90 border border-amber-500/30 flex items-center justify-center mb-6 text-[#D97706] shadow-xs">
+<!-- Gold Thread Doodle -->
+<svg class="w-7 h-7" fill="none" viewBox="0 0 40 40">
+<path d="M8 22 C6 13, 15 7, 24 10 C33 13, 34 26, 26 31 C18 35, 11 27, 15 19 C18 13, 29 14, 31 23 C33 30, 23 34, 19 28 C16 23, 22 17, 27 20 C32 24, 25 31, 35 34" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<h3 class="font-sans text-xl font-semibold text-on-surface mb-3 tracking-tight">The Dead-Stock Dilemma</h3>
+<p class="font-sans text-sm text-on-surface-variant leading-relaxed">Hiring full-time designers or retainer freelancers means paying for 160 hours a month even when you only have 40 hours of actual work. Idle creative benches silently burn payroll during slow release cycles.</p>
+</div>
+<div class="mt-8 pt-5 pb-2 border-t border-ink-midnight/10">
+<span class="font-editorial italic text-base text-ink-midnight">"Why pay full salary when content output ebbs and flows?"</span>
+</div>
+</div>
+<!-- Card 2 (Tilted +1.2deg with Dusty Rose Washi Tape) -->
+<div class="paper-card deckled-bottom-2 p-8 rounded-xl flex flex-col justify-between transition-transform duration-300 hover:rotate-0 transform rotate-[1.2deg]">
+<!-- Washi Tape Dusty Rose on top right -->
+<div class="washi-tape -top-3.5 right-8 w-24 h-5 bg-[#BE6464]/80 rounded-xs transform rotate-3 border border-black/5"></div>
+<div>
+<div class="w-12 h-12 rounded-xl bg-rose-50/90 border border-rose-400/30 flex items-center justify-center mb-6 text-[#BE6464] shadow-xs">
+<!-- Rose Coin-Stack Doodle -->
+<svg class="w-7 h-7" fill="none" viewBox="0 0 40 40">
+<ellipse cx="20" cy="10" rx="11" ry="4.5" stroke="currentColor" stroke-linecap="round" stroke-width="2"></ellipse>
+<path d="M9 10 V 17 C 9 19.5 14 21.5 20 21.5 C 26 21.5 31 19.5 31 17 V 10" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path>
+<path d="M9 17 V 24 C 9 26.5 14 28.5 20 28.5 C 26 28.5 31 26.5 31 24 V 17" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path>
+<path d="M9 24 V 31 C 9 33.5 14 35.5 20 35.5 C 26 35.5 31 33.5 31 31 V 24" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path>
+</svg>
+</div>
+<h3 class="font-sans text-xl font-semibold text-on-surface mb-3 tracking-tight">The Feast-or-Famine Choke</h3>
+<p class="font-sans text-sm text-on-surface-variant leading-relaxed">When launch week arrives or a campaign scales up, your single contractor or in-house designer hits a bottleneck. Scrambling to recruit emergency freelancers on 48h notice destroys quality and brand consistency.</p>
+</div>
+<div class="mt-8 pt-5 pb-2 border-t border-ink-midnight/10">
+<span class="font-editorial italic text-base text-ink-midnight">"Under-capacity during spikes, idle capacity during lulls."</span>
+</div>
+</div>
+<!-- Card 3 (Tilted -1.8deg with Sage Green Washi Tape) -->
+<div class="paper-card deckled-bottom-1 p-8 rounded-xl flex flex-col justify-between transition-transform duration-300 hover:rotate-0 transform -rotate-[1.8deg]">
+<!-- Washi Tape Sage Green on top center -->
+<div class="washi-tape -top-3.5 left-12 w-24 h-5 bg-[#4D7C5D]/80 rounded-xs transform -rotate-1 border border-black/5"></div>
+<div>
+<div class="w-12 h-12 rounded-xl bg-emerald-50/90 border border-emerald-500/30 flex items-center justify-center mb-6 text-[#4D7C5D] shadow-xs">
+<!-- Sage Dice Doodle -->
+<svg class="w-7 h-7" fill="none" viewBox="0 0 40 40">
+<path d="M 20 6 L 33 13 L 20 20 L 7 13 Z" stroke="currentColor" stroke-linejoin="round" stroke-width="2"></path>
+<path d="M 7 13 V 27 L 20 34 V 20" stroke="currentColor" stroke-linejoin="round" stroke-width="2"></path>
+<path d="M 33 13 V 27 L 20 34" stroke="currentColor" stroke-linejoin="round" stroke-width="2"></path>
+<circle cx="20" cy="13" fill="currentColor" r="1.2"></circle>
+<circle cx="13" cy="22" fill="currentColor" r="1.2"></circle>
+<circle cx="15" cy="27" fill="currentColor" r="1.2"></circle>
+<circle cx="26" cy="22" fill="currentColor" r="1.2"></circle>
+<circle cx="28" cy="27" fill="currentColor" r="1.2"></circle>
+</svg>
+</div>
+<h3 class="font-sans text-xl font-semibold text-on-surface mb-3 tracking-tight">The Inflexible Lock-In</h3>
+<p class="font-sans text-sm text-on-surface-variant leading-relaxed">Traditional agencies demand rigid 6-to-12 month fixed scopes. If your strategy pivots from weekly reels to carousel design or deep-dive copy, your contracted agency team lacks the specialized skills to adapt.</p>
+</div>
+<div class="mt-8 pt-5 pb-2 border-t border-ink-midnight/10">
+<span class="font-editorial italic text-base text-ink-midnight">"Locked into specialists you no longer need."</span>
+</div>
+</div>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- SECTION: HOW IT WORKS (COIN CHEST WORK DISTRIBUTION) -->
+<!-- ========================================================================= -->
+<section class="w-full max-w-6xl mx-auto px-6 sm:px-8 py-16 md:py-20" id="how-it-works">
+<!-- Section Header -->
+<div class="max-w-2xl mb-10">
+<p class="font-mono text-xs uppercase tracking-widest text-ink-midnight font-semibold mb-2">
+          HOW IT WORKS
+        </p>
+<h2 class="font-handwriting text-3xl sm:text-4xl text-ink-midnight font-bold leading-tight">
+          So how does work actually get distributed?
+        </h2>
+</div>
+<!-- Centerpiece Tactile Architectural Field-Note Card -->
+<div class="relative paper-card deckled-card-wide bg-[#FFFFFF] border border-ink-midnight/15 rounded-2xl p-6 sm:p-10 md:p-12 transition-all transform rotate-[-0.3deg] overflow-hidden" id="diagram-container">
+<!-- Semi-transparent Sage Washi Strip -->
+<div class="washi-tape -top-3.5 right-16 w-28 h-5 bg-[#4D7C5D]/80 rounded-xs transform rotate-2 border border-black/5"></div>
+<!-- Corner Amber Washi Pin Left -->
+<div class="washi-tape -top-3 left-12 w-20 h-4 bg-[#D97706]/75 rounded-xs transform -rotate-3 border border-black/5"></div>
+<!-- Flying Coin Canvas Layer -->
+<div class="absolute inset-0 pointer-events-none z-30" id="coin-stage"><div class="flying-coin">10</div><div class="flying-coin" style="transform: translate(534.324px, 178.849px) scale(1.09832) rotate(83.3516deg);">10</div><div class="flying-coin">10</div></div>
+<!-- Status Note on Cycle Finish -->
+<div class="absolute top-4 left-1/2 -translate-x-1/2 transition-opacity duration-300 z-20 px-4 py-1.5 bg-[#FAF8F3] border border-ink-midnight/20 rounded-full text-ink-midnight font-mono text-xs font-semibold flex items-center gap-2 shadow-xs opacity-0" id="cycle-banner">
+<span class="w-1.5 h-1.5 rounded-full bg-[#4D7C5D] animate-ping"></span>
+<span class="font-handwriting text-base">Bench balanced &amp; fully deployed — zero idle capacity</span>
+</div>
+<!-- Main Restrained Hand-Inked Stage -->
+<div class="relative w-full flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-6 pt-4 pb-2">
+<!-- LEFT: Restrained Hand-Inked Intake Vault "Your Business" -->
+<div class="w-full lg:w-72 flex flex-col items-center shrink-0">
+<div class="relative w-64 bg-[#FAFAF7] border border-ink-midnight/20 rounded-xl p-6 shadow-xs flex flex-col items-center text-center transition-transform duration-200" id="chest-element" style="transform: scale(1);">
+<!-- Minimal Label Tag -->
+<div class="w-full pb-2 mb-3 border-b border-dashed border-ink-midnight/20 flex items-center justify-between px-1">
+<span class="font-mono text-[10px] uppercase font-semibold tracking-widest text-ink-midnight/60">Source Vault</span>
+<span class="font-mono text-[10px] uppercase text-ink-midnight/40 tracking-wider">Fig. 01</span>
+</div>
+<!-- Single-Stroke Hand-Sketched Chest Linework Icon -->
+<div class="relative w-20 h-16 flex items-center justify-center mb-3">
+<svg class="w-16 h-14 text-ink-midnight pointer-events-none" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 64 56">
+<!-- Sketched Trunk Body -->
+<path d="M6 22 C6 21 7 20 9 20 L55 20 C57 20 58 21 58 22 L56 50 C56 51.5 54.5 53 53 53 L11 53 C9.5 53 8 51.5 8 50 Z"></path>
+<!-- Arched Curved Lid -->
+<path d="M6 20 C6 11 18 6 32 6 C46 6 58 11 58 20"></path>
+<!-- Horizontal Rim / Slat -->
+<path d="M7 23 L57 23"></path>
+<!-- Vertical Corner Bindings -->
+<path d="M16 11 L16 52" stroke-dasharray="2 2"></path>
+<path d="M48 11 L48 52" stroke-dasharray="2 2"></path>
+<!-- Hand-Drawn Lock Keyhole Plate -->
+<rect height="10" rx="1.5" width="8" x="28" y="19"></rect>
+<circle cx="32" cy="23" fill="currentColor" r="1"></circle>
+<path d="M32 24 L32 27"></path>
+</svg>
+<!-- Dynamic Coin Spawn Point Reference Marker -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none" id="coin-source"></div>
+</div>
+<!-- Counter & Title -->
+<div class="flex items-baseline justify-center gap-1.5 mb-1">
+<span class="font-editorial text-4xl text-ink-midnight font-medium tracking-tight" id="chest-counter">40</span>
+<span class="font-mono text-xs font-semibold uppercase text-ink-midnight/60">Units</span>
+</div>
+<span class="font-sans font-semibold text-base text-ink-midnight">Your Business</span>
+<span class="font-mono text-[11px] text-on-surface-variant uppercase tracking-wider mt-0.5">Monthly Content Demand</span>
+</div>
+<span class="font-handwriting text-xl text-ink-midnight/85 font-semibold mt-3 rotate-[-1deg]">
+      "Your intake sprint pool"
+    </span>
+</div>
+<!-- CENTER: Hand-Drawn Curved Trajectory Paths (Clean, Graceful Dashed Ink Lines) -->
+<div class="hidden lg:block relative w-52 h-84 shrink-0 pointer-events-none">
+<svg class="w-full h-full text-ink-midnight/35 overflow-visible" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 208 320">
+<!-- Path 1 to A1 (Top) -->
+<path d="M 8 160 C 70 160, 110 50, 196 50" id="flight-path-a1" stroke-dasharray="4 4" stroke-width="1.5"></path>
+<path d="M 190 46 L 198 50 L 190 54" stroke-width="1.5"></path>
+<!-- Path 2 to A2 (Middle) -->
+<path d="M 8 160 C 70 160, 110 160, 196 160" id="flight-path-a2" stroke-dasharray="4 4" stroke-width="1.5"></path>
+<path d="M 190 156 L 198 160 L 190 164" stroke-width="1.5"></path>
+<!-- Path 3 to A3 (Bottom) -->
+<path d="M 8 160 C 70 160, 110 270, 196 270" id="flight-path-a3" stroke-dasharray="4 4" stroke-width="1.5"></path>
+<path d="M 190 266 L 198 270 L 190 274" stroke-width="1.5"></path>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="font-handwriting text-xl text-ink-midnight/60 font-semibold px-2 py-0.5 rotate-[-2deg]">
+        flow
+      </span>
+</div>
+</div>
+<!-- RIGHT: Three Calm Paper Cards at Proportional Sizes with Hand-Inked Details -->
+<div class="w-full lg:w-[410px] flex flex-col gap-4 items-stretch">
+<!-- BOX A1: Largest (Allocated 50 units max) - Amber Subtle Accent Tab -->
+<div class="relative bg-[#FAFAF7] border border-ink-midnight/15 border-l-[3px] border-l-[#D97706] rounded-xl p-5 transition-all duration-300 shadow-xs flex flex-col justify-between" id="box-a1" style="transform: scale(1);">
+<!-- Destination landing anchor -->
+<div class="absolute top-4 right-4 w-4 h-4 pointer-events-none" id="target-a1"></div>
+<div class="flex items-start justify-between gap-3">
+<div class="flex items-center gap-3">
+<!-- Hand-Drawn Single-Stroke Film Reel / Play Sketch -->
+<div class="w-10 h-10 rounded-lg bg-white border border-ink-midnight/15 flex items-center justify-center text-ink-midnight shrink-0 shadow-2xs">
+<svg class="w-5 h-5 text-ink-midnight" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+<rect height="18" rx="2" width="18" x="3" y="3"></rect>
+<path d="M7 3 L7 21"></path>
+<path d="M17 3 L17 21"></path>
+<path d="M3 8 L7 8"></path>
+<path d="M3 13 L7 13"></path>
+<path d="M3 18 L7 18"></path>
+<path d="M17 8 L21 8"></path>
+<path d="M17 13 L21 13"></path>
+<path d="M17 18 L21 18"></path>
+<polygon points="10 9 15 12 10 15"></polygon>
+</svg>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-mono text-[10px] font-semibold text-[#D97706] uppercase tracking-wider">A1</span>
+<h4 class="font-sans font-semibold text-base text-ink-midnight">Video &amp; Motion Studio</h4>
+</div>
+<span class="font-mono text-[11px] text-on-surface-variant">Reels • 3D Hooks • Cuts</span>
+</div>
+</div>
+<!-- Hand-Inked Unit Counter -->
+<div class="text-right shrink-0">
+<div class="font-handwriting text-2xl font-bold text-ink-midnight tracking-tight">
+<span id="counter-a1" class="">30</span> <span class="text-base text-ink-midnight/60 font-normal">/ 50</span>
+</div>
+<span class="font-mono text-[10px] uppercase tracking-wider text-on-surface-variant font-medium">units</span>
+</div>
+</div>
+<!-- Delicate Hand-Inked Line Tally / Rule Indicator -->
+<div class="mt-4 pt-3 border-t border-ink-midnight/10 flex items-center justify-between text-xs font-mono text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-[#D97706]" id="dot-a1"></span>
+<span class="font-sans text-xs text-on-surface-variant" id="status-a1">Directing units...</span>
+</div>
+<span class="text-ink-midnight/60 text-[11px]">[ 50 units max ]</span>
+</div>
+</div>
+<!-- BOX A2: Medium (Allocated 30 units max) - Dusty Rose Subtle Accent Tab -->
+<div class="relative bg-[#FAFAF7] border border-ink-midnight/15 border-l-[3px] border-l-[#BE6464] rounded-xl p-4.5 transition-all duration-300 shadow-xs flex flex-col justify-between" id="box-a2" style="transform: scale(1.015);">
+<!-- Destination landing anchor -->
+<div class="absolute top-4 right-4 w-4 h-4 pointer-events-none" id="target-a2"></div>
+<div class="flex items-start justify-between gap-3">
+<div class="flex items-center gap-3">
+<!-- Hand-Drawn Single-Stroke Pen / Geometry Sketch -->
+<div class="w-9 h-9 rounded-lg bg-white border border-ink-midnight/15 flex items-center justify-center text-ink-midnight shrink-0 shadow-2xs">
+<svg class="w-5 h-5 text-ink-midnight" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+<path d="M12 19 L19 12 L22 15 L15 22 Z"></path>
+<path d="M18 13 L9 4 L5 4 L2 7 L2 11 L11 20"></path>
+<circle cx="5.5" cy="7.5" fill="currentColor" r="0.75"></circle>
+</svg>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-mono text-[10px] font-semibold text-[#BE6464] uppercase tracking-wider">A2</span>
+<h4 class="font-sans font-semibold text-sm text-ink-midnight">Design &amp; Visuals</h4>
+</div>
+<span class="font-mono text-[10px] text-on-surface-variant">Carousels • Infographics</span>
+</div>
+</div>
+<!-- Hand-Inked Unit Counter -->
+<div class="text-right shrink-0">
+<div class="font-handwriting text-2xl font-bold text-ink-midnight tracking-tight">
+<span id="counter-a2" class="">20</span> <span class="text-base text-ink-midnight/60 font-normal">/ 30</span>
+</div>
+<span class="font-mono text-[10px] uppercase tracking-wider text-on-surface-variant font-medium">units</span>
+</div>
+</div>
+<!-- Delicate Hand-Inked Line Tally / Rule Indicator -->
+<div class="mt-3 pt-2.5 border-t border-ink-midnight/10 flex items-center justify-between text-xs font-mono text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-[#BE6464]" id="dot-a2"></span>
+<span class="font-sans text-xs text-on-surface-variant" id="status-a2">Directing units...</span>
+</div>
+<span class="text-ink-midnight/60 text-[11px]">[ 30 units max ]</span>
+</div>
+</div>
+<!-- BOX A3: Compact (Allocated 20 units max) - Sage Green Subtle Accent Tab -->
+<div class="relative bg-[#FAFAF7] border border-ink-midnight/15 border-l-[3px] border-l-[#4D7C5D] rounded-xl p-3.5 transition-all duration-300 shadow-xs flex flex-col justify-between" id="box-a3" style="transform: scale(1);">
+<!-- Destination landing anchor -->
+<div class="absolute top-4 right-4 w-4 h-4 pointer-events-none" id="target-a3"></div>
+<div class="flex items-start justify-between gap-3">
+<div class="flex items-center gap-3">
+<!-- Hand-Drawn Single-Stroke Quill / Type Sketch -->
+<div class="w-8 h-8 rounded-lg bg-white border border-ink-midnight/15 flex items-center justify-center text-ink-midnight shrink-0 shadow-2xs">
+<svg class="w-4 h-4 text-ink-midnight" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+<path d="M4 20 L8 19 L19 8 C20 7 20 5 19 4 C18 3 16 3 15 4 L4 15 Z"></path>
+<path d="M14 5 L18 9"></path>
+<path d="M4 20 L7 20"></path>
+</svg>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-mono text-[10px] font-semibold text-[#4D7C5D] uppercase tracking-wider">A3</span>
+<h4 class="font-sans font-semibold text-sm text-ink-midnight">Editorial &amp; Copy</h4>
+</div>
+<span class="font-mono text-[10px] text-on-surface-variant">Captions • Scripts • Tone</span>
+</div>
+</div>
+<!-- Hand-Inked Unit Counter -->
+<div class="text-right shrink-0">
+<div class="font-handwriting text-2xl font-bold text-ink-midnight tracking-tight">
+<span id="counter-a3" class="">10</span> <span class="text-base text-ink-midnight/60 font-normal">/ 20</span>
+</div>
+<span class="font-mono text-[10px] uppercase tracking-wider text-on-surface-variant font-medium">units</span>
+</div>
+</div>
+<!-- Delicate Hand-Inked Line Tally / Rule Indicator -->
+<div class="mt-2.5 pt-2 border-t border-ink-midnight/10 flex items-center justify-between text-xs font-mono text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-[#4D7C5D]" id="dot-a3"></span>
+<span class="font-sans text-xs text-on-surface-variant" id="status-a3">Directing units...</span>
+</div>
+<span class="text-ink-midnight/60 text-[11px]">[ 20 units max ]</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Caption Beneath Diagram -->
+<div class="mt-8 pt-6 border-t border-ink-midnight/10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+<p class="font-sans text-sm sm:text-base text-on-surface max-w-2xl leading-relaxed">
+  Your total content needs get distributed across your bench — automatically prioritized and allocated to the right talent, so nothing sits idle and nothing gets dropped.
+</p>
+<span class="font-handwriting text-2xl text-ink-midnight font-bold whitespace-nowrap">
+  "Zero dead capacity. 100% elastic."
+</span>
+</div>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- TORN-PAPER SCRAP CHIPS: BUILT FOR BUSINESSES LIKE -->
+<!-- ========================================================================= -->
+<section class="w-full max-w-6xl mx-auto px-6 sm:px-8 py-4">
+<div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+<span class="font-mono text-xs uppercase tracking-wider text-on-surface-variant font-medium">
+      Built for businesses like:
+    </span>
+<div class="flex flex-wrap items-center justify-center gap-4">
+<!-- Chip 1: Cafés (-2deg) -->
+<div class="bg-[#FAF7F0] border border-ink-midnight/15 shadow-sm px-4 py-1.5 rounded-sm transform -rotate-2 hover:rotate-0 transition-transform duration-200" style="clip-path: polygon(0% 0%, 100% 2px, 98% 100%, 2% 98%);">
+<span class="font-sans font-medium text-sm text-ink-midnight">☕ Cafés</span>
+</div>
+<!-- Chip 2: D2C Brands (1.5deg) -->
+<div class="bg-[#FAF7F2] border border-ink-midnight/15 shadow-sm px-4 py-1.5 rounded-sm transform rotate-[1.5deg] hover:rotate-0 transition-transform duration-200" style="clip-path: polygon(2% 1px, 99% 0%, 100% 97%, 0% 100%);">
+<span class="font-sans font-medium text-sm text-ink-midnight">📦 D2C Brands</span>
+</div>
+<!-- Chip 3: Gyms (-1deg) -->
+<div class="bg-[#F8F9F5] border border-ink-midnight/15 shadow-sm px-4 py-1.5 rounded-sm transform -rotate-1 hover:rotate-0 transition-transform duration-200" style="clip-path: polygon(0% 3px, 100% 0%, 97% 100%, 3% 97%);">
+<span class="font-sans font-medium text-sm text-ink-midnight">⚡ Gyms</span>
+</div>
+<!-- Chip 4: Startups (2deg) -->
+<div class="bg-[#FAF5F2] border border-ink-midnight/15 shadow-sm px-4 py-1.5 rounded-sm transform rotate-2 hover:rotate-0 transition-transform duration-200" style="clip-path: polygon(3% 0%, 98% 2px, 100% 98%, 0% 100%);">
+<span class="font-sans font-medium text-sm text-ink-midnight">🚀 Startups</span>
+</div>
+</div>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- SECTION: WHY US (THE BENCH ADVANTAGE) -->
+<!-- ========================================================================= -->
+<section class="w-full max-w-6xl mx-auto px-6 sm:px-8 py-16 md:py-20" id="why-us">
+<!-- Section Header -->
+<div class="max-w-2xl mb-10">
+<p class="font-mono text-xs uppercase tracking-widest text-ink-midnight font-semibold mb-2">
+  THE BENCH ADVANTAGE
+</p>
+<div class="relative inline-block">
+<h2 class="font-handwriting text-3xl sm:text-4xl text-ink-midnight font-bold leading-tight">
+  What actually makes our creative bench different?
+</h2>
+<svg class="w-56 h-3 text-ink-midnight mt-1 pointer-events-none opacity-85" fill="none" viewBox="0 0 240 12">
+<path d="M 3 6 C 50 2, 120 2, 235 6 M 35 9 C 90 6, 160 5, 215 8" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"></path>
+</svg>
+</div>
+</div>
+<!-- 4 Clean Scrapbook Paper Cards with Sketched Blue Ink Checkmarks & Alternating Tilts -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch pt-2">
+<!-- Card 1: -1.5deg tilt, Amber Tape -->
+<div class="paper-card deckled-bottom-1 p-6 rounded-xl flex flex-col justify-between transition-transform duration-300 hover:rotate-0 transform -rotate-[1.5deg]">
+<div class="washi-tape -top-3 left-6 w-16 h-4 bg-[#D97706]/80 rounded-xs transform -rotate-3 border border-black/5"></div>
+<div>
+<div class="flex items-center justify-between mb-5">
+<span class="font-mono text-xs text-ink-midnight/60 font-semibold tracking-wider">01</span>
+<svg class="w-6 h-6 text-ink-midnight" fill="none" viewBox="0 0 28 28">
+<path d="M4 14 C 7 16, 10 20, 12 23 C 15 16, 20 9, 25 5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4"></path>
+</svg>
+</div>
+<h3 class="font-sans text-lg font-semibold text-on-surface mb-2">Flex Your Bench</h3>
+<p class="font-sans text-sm text-on-surface-variant leading-relaxed">Allocate more or fewer talent-hours month to month as your actual content volume changes. Shift seamlessly between motion, design, or copy with zero dead capacity sitting on payroll.</p>
+</div>
+<div class="mt-6 pt-4 pb-1 border-t border-ink-midnight/10 font-handwriting text-lg text-ink-midnight font-semibold">
+  "Elastic capacity on demand."
+</div>
+</div>
+<!-- Card 2: +1.4deg tilt, Rose Tape -->
+<div class="paper-card deckled-bottom-2 p-6 rounded-xl flex flex-col justify-between transition-transform duration-300 hover:rotate-0 transform rotate-[1.4deg]">
+<div class="washi-tape -top-3 right-6 w-16 h-4 bg-[#BE6464]/80 rounded-xs transform rotate-2 border border-black/5"></div>
+<div>
+<div class="flex items-center justify-between mb-5">
+<span class="font-mono text-xs text-ink-midnight/60 font-semibold tracking-wider">02</span>
+<svg class="w-6 h-6 text-ink-midnight" fill="none" viewBox="0 0 28 28">
+<path d="M4 15 L 10 21 L 24 6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4"></path>
+</svg>
+</div>
+<h3 class="font-sans text-lg font-semibold text-on-surface mb-2">Single Point of Contact</h3>
+<p class="font-sans text-sm text-on-surface-variant leading-relaxed">One dedicated creative director synchronizes your entire bench. No frantic multi-person WhatsApp groups or repeating your brand manual to five different contractors.</p>
+</div>
+<div class="mt-6 pt-4 pb-1 border-t border-ink-midnight/10 font-handwriting text-lg text-ink-midnight font-semibold">
+  "One calm thread."
+</div>
+</div>
+<!-- Card 3: -1.2deg tilt, Sage Tape -->
+<div class="paper-card deckled-bottom-1 p-6 rounded-xl flex flex-col justify-between transition-transform duration-300 hover:rotate-0 transform -rotate-[1.2deg]">
+<div class="washi-tape -top-3 left-8 w-16 h-4 bg-[#4D7C5D]/80 rounded-xs transform -rotate-2 border border-black/5"></div>
+<div>
+<div class="flex items-center justify-between mb-5">
+<span class="font-mono text-xs text-ink-midnight/60 font-semibold tracking-wider">03</span>
+<svg class="w-6 h-6 text-ink-midnight" fill="none" viewBox="0 0 28 28">
+<circle cx="14" cy="14" r="11" stroke="currentColor" stroke-dasharray="3 2" stroke-width="1.6"></circle>
+<path d="M8 14 L 12 18 L 20 10" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"></path>
+</svg>
+</div>
+<h3 class="font-sans text-lg font-semibold text-on-surface mb-2">Standardized Flat Retainer</h3>
+<p class="font-sans text-sm text-on-surface-variant leading-relaxed">Predictable monthly units with transparent hours and clear scope. Roll unused capacity into future production sprints without hidden rush fees or friction.</p>
+</div>
+<div class="mt-6 pt-4 pb-1 border-t border-ink-midnight/10 font-handwriting text-lg text-ink-midnight font-semibold">
+  "Zero surprise invoices."
+</div>
+</div>
+<!-- Card 4: +1.8deg tilt, Amber Tape -->
+<div class="paper-card deckled-bottom-2 p-6 rounded-xl flex flex-col justify-between transition-transform duration-300 hover:rotate-0 transform rotate-[1.8deg]">
+<div class="washi-tape -top-3 right-8 w-16 h-4 bg-[#D97706]/80 rounded-xs transform rotate-3 border border-black/5"></div>
+<div>
+<div class="flex items-center justify-between mb-5">
+<span class="font-mono text-xs text-ink-midnight/60 font-semibold tracking-wider">04</span>
+<svg class="w-6 h-6 text-ink-midnight" fill="none" viewBox="0 0 28 28">
+<path d="M5 13 C 6 17, 9 21, 11 23 C 14 17, 19 10, 25 5" stroke="currentColor" stroke-linecap="round" stroke-width="2.4"></path>
+</svg>
+</div>
+<h3 class="font-sans text-lg font-semibold text-on-surface mb-2">Skill-Tested Talent Pool</h3>
+<p class="font-sans text-sm text-on-surface-variant leading-relaxed">Draw from a vetted top 3% pool of specialist editors, illustrators, and copywriters evaluated through rigorous production case tests — not inflated resume claims.</p>
+</div>
+<div class="mt-6 pt-4 pb-1 border-t border-ink-midnight/10 font-handwriting text-lg text-ink-midnight font-semibold">
+  "Pre-vetted specialist roster."
+</div>
+</div>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- SECTION: LEADERSHIP / FOUNDERS -->
+<!-- ========================================================================= -->
+<section class="w-full max-w-6xl mx-auto px-6 sm:px-8 py-16 md:py-20" id="founders">
+<!-- Section Header -->
+<div class="max-w-2xl mb-10">
+<p class="font-mono text-xs uppercase tracking-widest text-ink-midnight font-semibold mb-2">
+          Leadership
+        </p>
+<h2 class="font-handwriting text-3xl sm:text-4xl text-ink-midnight font-bold leading-tight">
+          Who are you, exactly?
+        </h2>
+</div>
+<!-- Two Authentic Scrapbook Cards with Polaroid Snapshots -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-10 pt-2">
+<!-- Founder 1: Shrey Dave (Tilted -1.2deg) -->
+<div class="paper-card deckled-bottom-1 p-6 sm:p-8 rounded-2xl relative transform -rotate-[1.2deg] hover:rotate-0 transition-transform duration-300">
+<!-- Washi Tape pinned to top left of card -->
+<div class="washi-tape -top-3.5 left-10 w-24 h-5 bg-[#BE6464]/80 rounded-xs transform -rotate-3 border border-black/5"></div>
+<div class="flex flex-col sm:flex-row gap-6 items-center sm:items-start">
+<!-- Polaroid photo frame with taped corner -->
+<div class="p-2 pb-5 bg-white border border-ink-midnight/15 rounded-sm shadow-md shrink-0 relative transform rotate-[-2deg]">
+<!-- Small washi tape on Polaroid corner -->
+<div class="washi-tape -top-2.5 -left-2.5 w-12 h-4 bg-[#BE6464]/85 border border-[#BE6464]/40 transform -rotate-12 rounded-xs pointer-events-none"></div>
+<img alt="Shrey Dave" class="w-36 h-44 sm:w-40 sm:h-48 object-cover rounded-xs" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDap86yy7uRAB6dVzNKsLcXyESEqVU44V1jK59oRWc6OpI8S5w623_NelZ_0gYNDd1Xb1rY4HGdrqxSpeOzyHm4hCzgcEZ7AuOPA489Odn6nCFqPJxY9OR6m29gids07qhacQA41JR-Rx3i1fKUDHHNbBEr83oC2QKc35Upk6GaIs55sMBTCNJajc7sv3sClxBCAs8u59TAVvGOdxAb10jnqLNnIgLrHeA5JALvIrieKTprmN0eea2fBzmacA9y651Q5w">
+<div class="text-center font-handwriting text-xs text-ink-midnight/70 mt-1 font-semibold">Shrey D.</div>
+</div>
+<div class="flex flex-col justify-between h-full space-y-3">
+<div>
+<h3 class="font-handwriting text-3xl text-ink-midnight font-bold leading-none">Shrey Dave</h3>
+<p class="font-mono text-xs text-on-surface-variant uppercase tracking-wider mt-1 font-semibold">Co-Founder — Systems &amp; Operations</p>
+</div>
+<p class="font-sans text-sm text-on-surface-variant leading-relaxed">Oversees backend infrastructure, production workflows, and creator routing pipelines. Backend engineer (Java, Spring Boot, distributed systems) and B.Tech CS student at VIT Bhopal.</p>
+<div class="pt-2">
+<a class="inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-ink-midnight hover:underline underline-offset-4" href="https://myportfolio-one-lyart-26.vercel.app/" rel="noopener noreferrer" target="_blank">
+<span class="">View Portfolio</span>
+<span class="material-symbols-outlined text-sm">arrow_outward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+<!-- Founder 2: Khushal Hingwe (Tilted +1.2deg) -->
+<div class="paper-card deckled-bottom-2 p-6 sm:p-8 rounded-2xl relative transform rotate-[1.2deg] hover:rotate-0 transition-transform duration-300">
+<!-- Washi Tape pinned to top right of card -->
+<div class="washi-tape -top-3.5 right-10 w-24 h-5 bg-[#4D7C5D]/80 rounded-xs transform rotate-2 border border-black/5"></div>
+<div class="flex flex-col sm:flex-row gap-6 items-center sm:items-start">
+<!-- Polaroid photo frame with taped corner -->
+<div class="p-2 pb-5 bg-white border border-ink-midnight/15 rounded-sm shadow-md shrink-0 relative transform rotate-[2deg]">
+<!-- Small washi tape on Polaroid corner -->
+<div class="washi-tape -top-2.5 -right-2.5 w-12 h-4 bg-[#4D7C5D]/85 border border-[#4D7C5D]/40 transform rotate-12 rounded-xs pointer-events-none"></div>
+<img alt="Khushal Hingwe" class="w-36 h-44 sm:w-40 sm:h-48 object-cover rounded-xs transform" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5Pp3VtzRQDn6YfWV8VjhQpyy6aK7EjbfYuA3GtELJmndbQBOsHoRvunwrfGdPaU1FeEyULwKWL_CzSNHpIPe1C5vTx5PSTmjFJsIJzUoDNqR-ww1CAvQng50Gq03Z2t1yMYZFpwhucdGPDd1GHbvZ4nKdm6Sn_JOXXSwxUxW0kLxt42lX-DAP3E-BtvTx6sNTAQTnO-aY00k0mrVoBzVsQiWGyx_j1qz6GOPUQPnbCfAV0DclBb_jRuRRHt2ImPrLgQ">
+<div class="text-center font-handwriting text-xs text-ink-midnight/70 mt-1 font-semibold">Khushal H.</div>
+</div>
+<div class="flex flex-col justify-between h-full space-y-3">
+<div>
+<h3 class="font-handwriting text-3xl text-ink-midnight font-bold leading-none">Khushal Hingwe</h3>
+<p class="font-mono text-xs text-on-surface-variant uppercase tracking-wider mt-1 font-semibold">Co-Founder — Brand Strategy &amp; Creative Direction</p>
+</div>
+<p class="font-sans text-sm text-on-surface-variant leading-relaxed">Drives brand narrative, editorial voice, high-converting copywriting standards, and creative direction. Background in ad strategy, brand storytelling, and B.Tech CS student at VIT Bhopal.</p>
+<div class="pt-2">
+<a class="inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-ink-midnight hover:underline underline-offset-4" href="https://69ec067d77abbeda85988c9f--jolly-biscuit-e3716b.netlify.app/" rel="noopener noreferrer" target="_blank">
+<span class="">View Portfolio</span>
+<span class="material-symbols-outlined text-sm">arrow_outward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- PULL-QUOTE PAPER SCRAP: BETWEEN FOUNDERS & FINAL CTA -->
+<!-- ========================================================================= -->
+<section class="w-full max-w-4xl mx-auto px-6 sm:px-8 py-6">
+<div class="paper-card bg-[#FAF6EE] border border-ink-midnight/15 rounded-xl px-8 py-6 text-center transform -rotate-1 relative" style="clip-path: polygon(0% 2px, 100% 0%, 99% 98%, 1% 100%);">
+<!-- Pinned Washi Tape Center Top -->
+<div class="washi-tape -top-3.5 left-1/2 -translate-x-1/2 w-28 h-5 bg-[#D97706]/80 rounded-xs transform rotate-1 border border-black/5"></div>
+<p class="font-handwriting text-2xl sm:text-3xl text-ink-midnight font-bold leading-snug tracking-tight">
+      "We built this because we were tired of watching good brands get inconsistent content."
+    </p>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- FINAL CTA SECTION -->
+<!-- ========================================================================= -->
+<section class="w-full max-w-6xl mx-auto px-6 sm:px-8 py-14 md:py-18" id="get-started">
+<div class="paper-card deckled-card-wide p-10 sm:p-16 rounded-3xl text-center flex flex-col items-center relative transform rotate-[0.3deg]">
+<!-- Top Center Washi Tape in Sage Green -->
+<div class="washi-tape -top-3.5 left-1/2 -translate-x-1/2 w-32 h-5 bg-[#4D7C5D]/80 rounded-xs transform -rotate-1 border border-black/5"></div>
+<h2 class="font-handwriting text-4xl sm:text-6xl text-ink-midnight font-bold leading-tight mb-4">
+          Ready to hand off your content?
+        </h2>
+<p class="font-sans text-base sm:text-lg text-on-surface-variant max-w-xl mx-auto mb-8 leading-relaxed">
+          Tell us about your brand aesthetic, posting cadence, and output goals. We will assemble and assign your dedicated production unit within 48 hours.
+        </p>
+<div>
+<a class="inline-flex items-center justify-center gap-3 px-8 py-4 bg-ink-midnight hover:bg-ink-midnight-deep text-white font-sans font-medium text-base rounded-xl shadow-sm hover:shadow transition-all group" href="https://docs.google.com/forms/d/e/1FAIpQLSeQdPyrMlsmzObEgrK11FKfDFW-2bgo-viDt0t7uLkXDG8xEA/viewform" rel="noopener noreferrer" target="_blank">
+<span class="">Submit Your Requirement</span>
+<span class="font-mono text-lg transition-transform group-hover:translate-x-1">→</span>
+</a>
+</div>
+<p class="mt-5 font-sans text-xs text-on-surface-variant">
+          No sales calls • Direct intake reviewed within 24 hours
+        </p>
+</div>
+</section>
+</main>
+<!-- ========================================================================= -->
+<!-- FOOTER -->
+<!-- ========================================================================= -->
+<footer class="w-full border-t border-ink-midnight/10 py-10">
+<div class="max-w-6xl mx-auto px-6 sm:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+<div class="flex flex-col items-center sm:items-start gap-1">
+<a class="group inline-flex flex-col relative" href="#"><img src="https://lh3.googleusercontent.com/aida/AEtjO1XRFJluLeGJkCmstplmaXyZYIX9FTCYLLpf2clVkXQxQCtvYZMbwuVQCSUpvdAakt2lW3sPhcZKuPHcHxQp-Mq6dQ0XLdC3O8JkF-igjNnaP24E5H38arNveAD8SqOOdOWv6DFTifFDqTp0aDimnsvSnXlRArIY0xNpW9p8Ff6BOXnokXo1nzKWr9J40yuzw-TbtVI6fUTj43lQPUS4WqPINmnAHG-NAhcFy3JnVHll8g98402rCJXIU-Q" alt="The Cohort Media" class="h-9 w-auto object-contain transition-opacity group-hover:opacity-90"></a>
+<span class="font-sans text-xs text-on-surface-variant mt-1">
+          © 2024 The Cohort Media. All rights reserved.
+        </span>
+</div>
+<div class="flex flex-wrap items-center gap-6"><a class="font-mono text-xs text-ink-midnight font-semibold hover:underline underline-offset-4" href="mailto:thecohortmedia2@gmail.com">thecohortmedia2@gmail.com</a><a class="inline-flex items-center gap-1.5 font-mono text-xs text-ink-midnight font-semibold hover:underline underline-offset-4" href="https://www.linkedin.com/company/thecohortmedia/" target="_blank" rel="noopener noreferrer"><svg class="w-3.5 h-3.5 fill-current text-ink-midnight" viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"></path></svg><span class="">LinkedIn</span></a></div>
+</div>
+</footer>
+<!-- Interactive Coin Chest Distribution Animation Script -->
+<script>
+  (function() {
+    // Config and targets
+    const sequence = [
+      { target: 'a1', value: 10, max: 50 }, // 1: A1 (10/50)
+      { target: 'a2', value: 10, max: 30 }, // 2: A2 (10/30)
+      { target: 'a1', value: 10, max: 50 }, // 3: A1 (20/50)
+      { target: 'a3', value: 10, max: 20 }, // 4: A3 (10/20)
+      { target: 'a1', value: 10, max: 50 }, // 5: A1 (30/50)
+      { target: 'a2', value: 10, max: 30 }, // 6: A2 (20/30)
+      { target: 'a1', value: 10, max: 50 }, // 7: A1 (40/50)
+      { target: 'a3', value: 10, max: 20 }, // 8: A3 (20/20) - DONE
+      { target: 'a2', value: 10, max: 30 }, // 9: A2 (30/30) - DONE
+      { target: 'a1', value: 10, max: 50 }  // 10: A1 (50/50) - DONE
+    ];
+
+    const state = {
+      chest: 100,
+      a1: 0,
+      a2: 0,
+      a3: 0,
+      stepIndex: 0,
+      isRunning: false
+    };
+
+    const chestCounterEl = document.getElementById('chest-counter');
+    const stageEl = document.getElementById('coin-stage');
+    const containerEl = document.getElementById('diagram-container');
+    const bannerEl = document.getElementById('cycle-banner');
+    const chestBox = document.getElementById('chest-element');
+
+    const boxEls = {
+      a1: document.getElementById('box-a1'),
+      a2: document.getElementById('box-a2'),
+      a3: document.getElementById('box-a3')
+    };
+    const counterEls = {
+      a1: document.getElementById('counter-a1'),
+      a2: document.getElementById('counter-a2'),
+      a3: document.getElementById('counter-a3')
+    };
+    const statusEls = {
+      a1: document.getElementById('status-a1'),
+      a2: document.getElementById('status-a2'),
+      a3: document.getElementById('status-a3')
+    };
+    const targetAnchors = {
+      a1: document.getElementById('target-a1'),
+      a2: document.getElementById('target-a2'),
+      a3: document.getElementById('target-a3')
+    };
+    const sourceAnchor = document.getElementById('coin-source');
+
+    function updateUI() {
+      chestCounterEl.textContent = state.chest;
+      
+      // Update A1
+      counterEls.a1.textContent = state.a1;
+      if (state.a1 === 50) {
+        statusEls.a1.textContent = '✓ Capacity matched & allocated';
+        statusEls.a1.className = 'font-sans text-xs text-ink-midnight font-medium';
+      } else if (state.a1 > 0) {
+        statusEls.a1.textContent = 'Directing units...';
+      }
+
+      // Update A2
+      counterEls.a2.textContent = state.a2;
+      if (state.a2 === 30) {
+        statusEls.a2.textContent = '✓ Capacity matched & allocated';
+        statusEls.a2.className = 'font-sans text-xs text-ink-midnight font-medium';
+      } else if (state.a2 > 0) {
+        statusEls.a2.textContent = 'Directing units...';
+      }
+
+      // Update A3
+      counterEls.a3.textContent = state.a3;
+      if (state.a3 === 20) {
+        statusEls.a3.textContent = '✓ Capacity matched & allocated';
+        statusEls.a3.className = 'font-sans text-xs text-ink-midnight font-medium';
+      } else if (state.a3 > 0) {
+        statusEls.a3.textContent = 'Directing units...';
+      }
+    }
+
+    function resetCycle() {
+      state.chest = 100;
+      state.a1 = 0;
+      state.a2 = 0;
+      state.a3 = 0;
+      state.stepIndex = 0;
+
+      statusEls.a1.textContent = 'Awaiting allocation';
+      statusEls.a1.className = 'font-sans text-xs text-on-surface-variant';
+      statusEls.a2.textContent = 'Awaiting allocation';
+      statusEls.a2.className = 'font-sans text-xs text-on-surface-variant';
+      statusEls.a3.textContent = 'Awaiting allocation';
+      statusEls.a3.className = 'font-sans text-xs text-on-surface-variant';
+
+      bannerEl.classList.add('opacity-0');
+      updateUI();
+    }
+
+    function spawnAndFlyCoin(targetKey, onArrive) {
+      if (!sourceAnchor || !targetAnchors[targetKey] || !containerEl) {
+        onArrive();
+        return;
+      }
+
+      const containerRect = containerEl.getBoundingClientRect();
+      const startRect = sourceAnchor.getBoundingClientRect();
+      const endRect = targetAnchors[targetKey].getBoundingClientRect();
+
+      const startX = startRect.left - containerRect.left + (startRect.width / 2) - 12;
+      const startY = startRect.top - containerRect.top + (startRect.height / 2) - 12;
+
+      const endX = endRect.left - containerRect.left + (endRect.width / 2) - 12;
+      const endY = endRect.top - containerRect.top + (endRect.height / 2) - 12;
+
+      const coin = document.createElement('div');
+      coin.className = 'flying-coin';
+      coin.textContent = '10';
+      stageEl.appendChild(coin);
+
+      // Subtle chest bounce
+      chestBox.style.transform = 'scale(0.99)';
+      setTimeout(() => { chestBox.style.transform = 'scale(1)'; }, 140);
+
+      // Animate flight along a curved arch
+      const startTime = performance.now();
+      const duration = 620; // ms
+
+      function animateCoin(now) {
+        const elapsed = now - startTime;
+        const p = Math.min(elapsed / duration, 1);
+        // Smooth easing
+        const t = p < 0.5 ? 2 * p * p : -1 + (4 - 2 * p) * p;
+
+        const currentX = startX + (endX - startX) * t;
+        // Natural arc
+        const arcY = Math.sin(p * Math.PI) * -38;
+        const currentY = startY + (endY - startY) * t + arcY;
+
+        const scale = 0.85 + 0.25 * Math.sin(p * Math.PI);
+        const rotation = p * 180;
+
+        coin.style.transform = `translate(${currentX}px, ${currentY}px) scale(${scale}) rotate(${rotation}deg)`;
+
+        if (p < 1) {
+          requestAnimationFrame(animateCoin);
+        } else {
+          // Landed
+          coin.remove();
+          // Gentle response on arrival
+          const targetBox = boxEls[targetKey];
+          targetBox.style.transform = 'scale(1.015)';
+          setTimeout(() => { targetBox.style.transform = 'scale(1)'; }, 160);
+          onArrive();
+        }
+      }
+
+      requestAnimationFrame(animateCoin);
+    }
+
+    function runNextStep() {
+      if (state.stepIndex >= sequence.length) {
+        // Complete cycle: Celebratory pause
+        bannerEl.classList.remove('opacity-0');
+        setTimeout(() => {
+          resetCycle();
+          setTimeout(runNextStep, 800);
+        }, 2600);
+        return;
+      }
+
+      const step = sequence[state.stepIndex];
+      // Decrement chest
+      state.chest = Math.max(0, state.chest - 10);
+      chestCounterEl.textContent = state.chest;
+
+      // Spawn coin
+      spawnAndFlyCoin(step.target, () => {
+        state[step.target] += 10;
+        updateUI();
+        state.stepIndex++;
+        setTimeout(runNextStep, 420);
+      });
+    }
+
+    // Initialize
+    updateUI();
+    setTimeout(runNextStep, 900);
+  })();
+</script>
+
+
+
+
+
+
+
+
+</body></html>
